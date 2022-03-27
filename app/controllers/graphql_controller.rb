@@ -8,11 +8,20 @@ class GraphqlController < ApplicationController
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
-    context = {
-      # Query context goes here, for example:
-      # current_user: current_user,
-    }
-    result = TaskmeSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+
+    session = Session.where(key: request.headers['Authorization']).first
+    Rails.logger.info "#{variables}"
+    Rails.logger.info "Logged in as #{session&.user&.email}"
+
+    context = { current_user: session&.user, session_id: session&.id }
+
+    result =
+      TaskmeSchema.execute(
+        query,
+        variables: variables,
+        context: context,
+        operation_name: operation_name,
+      )
     render json: result
   rescue StandardError => e
     raise e unless Rails.env.development?
@@ -25,11 +34,7 @@ class GraphqlController < ApplicationController
   def prepare_variables(variables_param)
     case variables_param
     when String
-      if variables_param.present?
-        JSON.parse(variables_param) || {}
-      else
-        {}
-      end
+      variables_param.present? ? JSON.parse(variables_param) || {} : {}
     when Hash
       variables_param
     when ActionController::Parameters
@@ -45,6 +50,10 @@ class GraphqlController < ApplicationController
     logger.error e.message
     logger.error e.backtrace.join("\n")
 
-    render json: { errors: [{ message: e.message, backtrace: e.backtrace }], data: {} }, status: 500
+    render json: {
+             errors: [{ message: e.message, backtrace: e.backtrace }],
+             data: {},
+           },
+           status: 500
   end
 end
