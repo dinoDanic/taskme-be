@@ -26,5 +26,12 @@ module Types
     def logout
       Session.where(id: context[:session_id]).destroy_all
     end
+
+    field :get_projects, [Types::ProjectType], null: true
+
+    def get_projects
+      user = context[:current_user]
+      Project.where(user_id: user.id)
+    end
   end
 end
