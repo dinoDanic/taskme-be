@@ -33,5 +33,14 @@ module Types
       user = context[:current_user]
       Project.where(user_id: user.id)
     end
+
+    field :get_project_by_id, Types::ProjectType, null: true do
+      argument :id, ID, required: true
+    end
+
+    def get_project_by_id(id:)
+      user = context[:current_user]
+      project = user.projects.find(id)
+    end
   end
 end
