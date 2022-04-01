@@ -42,5 +42,11 @@ module Types
       user = context[:current_user]
       project = user.projects.find(id)
     end
+
+    field :get_all_users, [Types::UserType], null: true
+
+    def get_all_users
+      User.all
+    end
   end
 end
