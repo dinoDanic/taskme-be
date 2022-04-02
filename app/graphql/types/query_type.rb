@@ -48,5 +48,14 @@ module Types
     def get_all_users
       User.all
     end
+
+    field :get_project_tasks, [Types::TaskType], null: true do
+      argument :id, ID, required: true
+    end
+
+
+    def get_project_tasks(id:)
+      tasks = Task.where(project_id: id, parent_id: nil)
+    end
   end
 end
