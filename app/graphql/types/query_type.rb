@@ -66,6 +66,15 @@ module Types
       task = Task.find(id)
     end
 
+    field :get_task_by_parent_and_project, [Types::TaskType], null: true do
+      argument :parent_id, ID, required: true
+      argument :project_id, ID, required: true
+    end
+
+    def get_task_by_parent_and_project(parent_id:, project_id:)
+      user = context[:current_user]
+      tasksss = Task.where(project_id: project_id, parent_id: parent_id)
+    end
 
 
   end
