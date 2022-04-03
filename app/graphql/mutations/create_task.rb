@@ -5,10 +5,11 @@ module Mutations
     argument :assignee_id, ID, required: false
     argument :parent_id, ID, required: true
     argument :priority, Types::PriorityEnum, required: true
+    argument :description, String, required: false
 
     type Types::TaskType
 
-    def resolve(name:, project_id:, assignee_id:, parent_id:, priority:)
+    def resolve(name:, project_id:, assignee_id:, parent_id:, priority:, description:)
       user = context[:current_user]
       task = Task.create(
           name: name,
@@ -16,7 +17,8 @@ module Mutations
           project_id: project_id,
           assignee_id: assignee_id,
           parent_id: parent_id,
-          priority: priority
+          priority: priority,
+          description: description
       )
     end
   end
