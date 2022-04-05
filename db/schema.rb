@@ -18,6 +18,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_02_113513) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "priority", ["urgent", "high", "low", "none"]
   create_enum "priority_enum", ["urgent", "high", "low", "none"]
+  create_enum "task_status_enum", ["completed", "open"]
 
   create_table "project_task_joins", force: :cascade do |t|
     t.bigint "project_id", null: false
@@ -49,6 +50,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_02_113513) do
     t.string "name"
     t.string "description"
     t.enum "priority", default: "none", null: false, enum_type: "priority_enum"
+    t.enum "status", default: "open", null: false, enum_type: "task_status_enum"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_id"

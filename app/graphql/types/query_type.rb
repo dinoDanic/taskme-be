@@ -53,7 +53,6 @@ module Types
       argument :id, ID, required: true
     end
 
-
     def get_project_tasks(id:)
       tasks = Task.where(project_id: id, parent_id: nil)
     end

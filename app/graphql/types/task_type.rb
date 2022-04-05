@@ -6,5 +6,6 @@ module Types
     field :assignee_id, ID, null: true
     field :description, String, null: true
     field :priority, Types::PriorityEnum, null: false
+    field :status, Types::TaskStatusEnum, null: false
   end
 end
