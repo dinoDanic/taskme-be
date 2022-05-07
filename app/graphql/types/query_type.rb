@@ -75,6 +75,12 @@ module Types
       tasksss = Task.where(project_id: project_id, parent_id: parent_id)
     end
 
+    field :get_assigned_tasks, [Types::TaskType], null: true
 
+    def get_assigned_tasks
+      user = context[:current_user]
+      tasks = user.tasks.where(assignee_id: user.id)
+      tasks
+    end
   end
 end

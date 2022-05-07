@@ -49,6 +49,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_02_113513) do
   create_table "tasks", force: :cascade do |t|
     t.string "name"
     t.string "description"
+    t.string "project_name"
+    t.string "assignee_name"
     t.enum "priority", default: "none", null: false, enum_type: "priority_enum"
     t.enum "status", default: "open", null: false, enum_type: "task_status_enum"
     t.datetime "created_at", null: false
